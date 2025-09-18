@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="تطبيق قائمة المهام لإدارة وتنظيم مهامك اليومية بكفاءة.">
+    <meta property="og:title" content="To Do List App">
+    <meta property="og:description" content="تطبيق قائمة المهام لإدارة وتنظيم مهامك اليومية بكفاءة.">
+    <meta property="og:image" content="https://example.com/todo-list-preview.jpg"> <!-- Placeholder image -->
+    <meta property="og:url" content="https://example.com/your-todo-list-app">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="To Do List App">
+    <meta name="twitter:description" content="تطبيق قائمة المهام لإدارة وتنظيم مهامك اليومية بكفاءة.">
+    <meta name="twitter:image" content="https://example.com/todo-list-preview.jpg"> <!-- Placeholder image -->
+    <title>To Do List App</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="wrapper">
+        <header class="navbar">
+            <div class="logo">
+                <!-- شعار التطبيق -->
+                <h1>To-Do List</h1>
+            </div>
+            <div class="nav-actions">
+                <button id="addTaskBtn" class="add-task-btn" aria-label="إضافة مهمة جديدة"><i class="fas fa-plus"></i> إضافة مهمة جديدة</button>
+                <button id="languageToggle" class="language-toggle" aria-label="تبديل اللغة">English</button>
+                <button id="darkModeToggle" class="dark-mode-toggle" aria-label="تبديل الوضع الداكن"><i class="fas fa-moon"></i></button>
+            </div>
+        </header>
+
+        <aside class="sidebar">
+            <nav class="main-sections" role="navigation">
+                <div class="filters-tabs">
+                    <button class="filter-tab active" data-filter="all"><i class="fas fa-list"></i> كل المهام <span class="task-count">0</span></button>
+                    <button class="filter-tab" data-filter="today"><i class="fas fa-calendar-day"></i> اليوم <span class="task-count">0</span></button>
+                    <button class="filter-tab" data-filter="upcoming"><i class="fas fa-calendar-alt"></i> القادمة <span class="task-count">0</span></button>
+                    <button class="filter-tab" data-filter="completed"><i class="fas fa-check-circle"></i> المنجزة <span class="task-count">0</span></button>
+                    <button class="filter-tab" data-filter="deferred"><i class="fas fa-clock"></i> المؤجلة <span class="task-count">0</span></button>
+                    <button class="filter-tab" data-filter="overdue"><i class="fas fa-exclamation-circle"></i> المتأخرة <span class="task-count">0</span></button>
+                </div>
+            </nav>
+            <div class="progress-section">
+                <h3>التقدم</h3>
+                <div class="progress-bar-container">
+                    <div id="progressBar" class="progress-bar"></div>
+                </div>
+                <span id="progressText">0%</span>
+            </div>
+            <div class="tags-filters">
+                <button id="toggleTagsBtn" class="tags-toggle-btn" aria-expanded="false">
+                    <span>الوسوم</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div id="tagsList" class="collapsed">
+                    <h3 id="tagsTitle">الوسوم / فلاتر سريعة</h3>
+                    <!-- وسوم (Tags) / فلاتر سريعة -->
+                    <ul>
+                        <li><a href="#" id="tagPersonal" data-tag="personal">شخصي</a></li>
+                        <li><a href="#" id="tagWork" data-tag="work">عمل</a></li>
+                        <li><a href="#" id="tagStudy" data-tag="study">دراسة</a></li>
+                        <!-- Daily and general tags -->
+                        <li><a href="#" id="tagShopping" data-tag="shopping">تسوق 🛒</a></li>
+                        <li><a href="#" id="tagHome" data-tag="home">المنزل 🏠</a></li>
+                        <li><a href="#" id="tagFamily" data-tag="family">العائلة 👨‍👩‍👧‍👦</a></li>
+                        <li><a href="#" id="tagHealth" data-tag="health">الصحة 🏋️‍♂️ / 🩺</a></li>
+                        <li><a href="#" id="tagAppointments" data-tag="appointments">المواعيد ⏰</a></li>
+                        <li><a href="#" id="tagFinancial" data-tag="financial">مالية 💰</a></li>
+                        <li><a href="#" id="tagTravel" data-tag="travel">السفر ✈️</a></li>
+                        <!-- Productivity tags -->
+                        <li><a href="#" id="tagUrgent" data-tag="urgent">عاجل ⚡</a></li>
+                        <li><a href="#" id="tagImportant" data-tag="important">مهم ⭐</a></li>
+                        <li><a href="#" id="tagLater" data-tag="later">لاحقاً ⏳</a></li>
+                        <li><a href="#" id="tagReading" data-tag="reading">قراءة 📚</a></li>
+                        <li><a href="#" id="tagProjects" data-tag="projects">مشاريع 🚀</a></li>
+                        <li><a href="#" id="tagLearnSkill" data-tag="learn-skill">تعلم مهارة 🎓</a></li>
+                        <!-- Hobbies and interests tags -->
+                        <li><a href="#" id="tagSports" data-tag="sports">رياضة ⚽</a></li>
+                        <li><a href="#" id="tagCooking" data-tag="cooking">طبخ 🍳</a></li>
+                        <li><a href="#" id="tagGames" data-tag="games">ألعاب 🎮</a></li>
+                        <li><a href="#" id="tagArts" data-tag="arts">فنون 🎨</a></li>
+                        <li><a href="#" id="tagMusic" data-tag="music">موسيقى 🎵</a></li>
+                        <!-- Social tags -->
+                        <li><a href="#" id="tagFriends" data-tag="friends">أصدقاء 🤝</a></li>
+                        <li><a href="#" id="tagEvents" data-tag="events">مناسبات 🎉</a></li>
+                        <li><a href="#" id="tagVolunteering" data-tag="volunteering">تطوع 🤲</a></li>
+                        <li><a href="#" id="tagContact" data-tag="contact">تواصل 📞</a></li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content" role="main">
+            <div class="container">
+                <div class="search-section">
+                    <input type="text" id="searchInput" placeholder="ابحث عن مهمة...">
+                </div>
+                <div class="filters">
+                    <select id="filterByPriority">
+                        <option value="all">كل الأولويات</option>
+                        <option value="low">منخفضة</option>
+                        <option value="medium">متوسطة</option>
+                        <option value="high">عالية</option>
+                    </select>
+                    <input type="date" id="filterByDueDate">
+                </div>
+                <div class="sort-options">
+                    <label for="sortBy">ترتيب حسب:</label>
+                    <select id="sortBy">
+                        <option value="addedDate">تاريخ الإضافة</option>
+                        <option value="dueDate">تاريخ الاستحقاق</option>
+                        <option value="priority">الأولوية</option>
+                    </select>
+                    <button id="sortOrderBtn" aria-label="تبديل ترتيب الفرز">تصاعدي</button>
+                    <label for="groupBy">تجميع حسب:</label>
+                    <select id="groupBy">
+                        <option value="none">بلا</option>
+                        <option value="date">التاريخ</option>
+                        <option value="category">الفئة</option>
+                    </select>
+                </div>
+                <ul id="taskList">
+                    <!-- Tasks will be added here by JavaScript -->
+                </ul>
+            </div>
+
+    
+        </main>
+    </div>
+    <!-- Task Modal -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" aria-label="إغلاق">&times;</span>
+            <h2 id="modalTitle">إضافة مهمة جديدة</h2>
+            <form id="taskForm">
+                <div class="form-group">
+                    <label for="modalTaskInput">المهمة:</label>
+                    <input type="text" id="modalTaskInput" required maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label for="modalTaskDescription">الوصف (اختياري):</label>
+                    <textarea id="modalTaskDescription" maxlength="500"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="modalPriorityInput">الأولوية:</label>
+                    <select id="modalPriorityInput">
+                        <option value="low">منخفضة</option>
+                        <option value="medium" selected>متوسطة</option>
+                        <option value="high">عالية</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="modalDueDateInput">تاريخ الاستحقاق:</label>
+                    <input type="date" id="modalDueDateInput">
+                </div>
+                <div class="form-group">
+                    <label for="modalTagsInput">الوسوم (اختياري، مفصولة بفاصلة):</label>
+                    <input type="text" id="modalTagsInput" maxlength="200">
+                </div>
+                <div id="formError" class="form-error"></div>
+                <div class="form-actions">
+                    <button type="submit" id="saveTaskBtn" aria-label="حفظ المهمة">حفظ</button>
+                    <button type="button" id="cancelTaskBtn" aria-label="إلغاء">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
